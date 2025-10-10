@@ -52,10 +52,15 @@ const registerUser = asyncHandler( async (req, res) => {
     if (existedUser) {
         throw new ApiError(409, "User with email or username already exists")
     }
-    //console.log(req.files);
+    // console.log("1",req.files);
+    // console.log("2",req.files?.avatar[0]);
+    // console.log("3",req.files?.avatar[0]?.path);
 
     const avatarLocalPath = req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path;
+
+    console.log("avatarLocalPath: ", avatarLocalPath);
+
+    let coverImageLocalPath;
 
     if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
         coverImageLocalPath = req.files.coverImage[0].path
@@ -67,6 +72,7 @@ const registerUser = asyncHandler( async (req, res) => {
     }
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
+    //console.log("avatar: ", avatar);
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
 
     if (!avatar) {
@@ -96,9 +102,6 @@ const registerUser = asyncHandler( async (req, res) => {
     )
 
 } )
-
-
-
 
 
 export {
